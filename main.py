@@ -39,8 +39,8 @@ def get_topics(topic: str):
         return "Неверный ключ"
 
 
-@app.get('/get_quiz')
-def get_topics():
+@app.get('/quiz')
+def quiz():
     return quiz.quiz
 
 
