@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 import img_links
-
+import quiz
 
 app = FastAPI(title="ImgSite")
 app.mount("/static", StaticFiles(directory="static"))
@@ -37,6 +37,11 @@ def get_topics(topic: str):
         return img_links.dict_img[topic]
     except KeyError:
         return "Неверный ключ"
+
+
+@app.get('/get_quiz')
+def get_topics():
+    return quiz.quiz
 
 
 if __name__ == "__main__":
