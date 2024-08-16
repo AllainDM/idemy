@@ -1,7 +1,7 @@
 
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -32,8 +32,9 @@ def get_topics():
 
 
 @app.get('/get_topic/{topic}')
-def get_topics(topic: str):
+def get_topics(topic: str, response:Response):
     try:
+        response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
         return img_links.dict_img[topic]
     except KeyError:
         return "Неверный ключ"
