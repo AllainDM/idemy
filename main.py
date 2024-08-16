@@ -1,3 +1,4 @@
+import os
 import shutil
 from datetime import datetime
 
@@ -34,11 +35,25 @@ def get_topics():
 
 @app.get('/get_topic/{topic}')
 def get_topics(topic: str, response:Response):
-    try:
-        response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
-        return img_links.dict_img[topic]
-    except KeyError:
-        return "Неверный ключ"
+    # Выложенные пользователями артинки попадают в отдельную папку для дальнейшей проверки
+    if topic == "НаПроверку":
+        print("Проверяемые файлы")
+        # Необходимо составить список файлов во временной папке.
+        # Указываем путь к папке.
+        directory = "static/img/temp"
+        # Получаем список файлов.
+        files = os.listdir(directory)
+        try:
+            response.headers["x-total-count"] = str(len(files))
+            return files
+        except KeyError:
+            return "Неверный ключ"
+    else:
+        try:
+            response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
+            return img_links.dict_img[topic]
+        except KeyError:
+            return "Неверный ключ"
 
 
 @app.get('/quiz')
