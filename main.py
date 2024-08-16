@@ -1,7 +1,8 @@
-
+import shutil
+from datetime import datetime
 
 import uvicorn
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -43,6 +44,25 @@ def get_topics(topic: str, response:Response):
 @app.get('/quiz')
 def quiz():
     return quiz.quiz
+
+
+@app.get('/check_user')
+def check_user():
+    return "Неавторизованный"
+
+
+@app.post('/upload')
+async def upload(file: UploadFile):
+    try:
+        print(file.size)
+        date_now = datetime.strftime(datetime.now(), "%H:%M:%S")
+        file_location = f"static/img/temp/{date_now}_{file.filename}"
+        with open(file_location, "wb+") as file_object:
+            shutil.copyfileobj(file.file, file_object)
+
+        return {"Result": "OK"}
+    except:
+        return {"Result": "Error"}
 
 
 if __name__ == "__main__":
