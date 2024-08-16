@@ -45,7 +45,10 @@ def get_topics(topic: str, response:Response):
         files = os.listdir(directory)
         try:
             response.headers["x-total-count"] = str(len(files))
-            return files
+            new_files = []
+            for i in files:
+                new_files.append(f"static/img/temp/{i}")
+            return new_files
         except KeyError:
             return "Неверный ключ"
     else:

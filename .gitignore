@@ -5,3 +5,6 @@ venv
 # Конфиг
 config.py
 img_links.py
+
+# Папка с временными картинками
+static/img/temp
