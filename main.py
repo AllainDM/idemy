@@ -45,7 +45,8 @@ def get_topics(topic: str, response:Response):
         files = os.listdir(directory)
         try:
             # response.headers["x-total-count"] = str(len(files))
-            response.headers["Access-Control-Expose-Headers"] = str(len(files))
+            response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
+            response.headers["Access-Control-Expose-Headers"] = "x-total-count"
             new_files = []
             for i in files:
                 new_files.append(f"static/img/temp/{i}")
@@ -54,8 +55,9 @@ def get_topics(topic: str, response:Response):
             return "Неверный ключ"
     else:
         try:
-            # response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
-            response.headers["Access-Control-Expose-Headers"] = str(len(img_links.dict_img[topic]))
+            response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
+            response.headers["Access-Control-Expose-Headers"] = "x-total-count"
+
 
             return img_links.dict_img[topic]
         except KeyError:
