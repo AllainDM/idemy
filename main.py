@@ -35,33 +35,32 @@ def get_topics():
 
 @app.get('/get_topic/{topic}')
 def get_topics(topic: str, response:Response):
+    print("Проверяемые файлы")
+    # Необходимо составить список файлов во временной папке.
+    # Указываем путь к папке.
+    directory = f"static/img/{topic}"
+    # Получаем список файлов.
+    files = os.listdir(directory)
+    try:
+        new_files = []
+        for i in files:
+            new_files.append(f"static/img/{topic}/{i}")
+        response.headers["x-total-count"] = str(len(new_files))
+        response.headers["Access-Control-Expose-Headers"] = "x-total-count"
+        return new_files
+    except KeyError:
+        return "Неверный ключ"
     # Выложенные пользователями артинки попадают в отдельную папку для дальнейшей проверки
-    if topic == "НаПроверку":
-        print("Проверяемые файлы")
-        # Необходимо составить список файлов во временной папке.
-        # Указываем путь к папке.
-        directory = "static/img/temp"
-        # Получаем список файлов.
-        files = os.listdir(directory)
-        try:
-            # response.headers["x-total-count"] = str(len(files))
-            response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
-            response.headers["Access-Control-Expose-Headers"] = "x-total-count"
-            new_files = []
-            for i in files:
-                new_files.append(f"static/img/temp/{i}")
-            return new_files
-        except KeyError:
-            return "Неверный ключ"
-    else:
-        try:
-            response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
-            response.headers["Access-Control-Expose-Headers"] = "x-total-count"
-
-
-            return img_links.dict_img[topic]
-        except KeyError:
-            return "Неверный ключ"
+    # if topic == "НаПроверку":
+    # else:
+    #     try:
+    #         response.headers["x-total-count"] = str(len(img_links.dict_img[topic]))
+    #         response.headers["Access-Control-Expose-Headers"] = "x-total-count"
+    #
+    #
+    #         return img_links.dict_img[topic]
+    #     except KeyError:
+    #         return "Неверный ключ"
 
 
 @app.get('/quiz')
