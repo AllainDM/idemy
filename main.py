@@ -30,7 +30,12 @@ def test():
 
 @app.get('/get_topics')
 def get_topics():
-    return img_links.topics
+    # Необходимо составить список папок с темами.
+    # Указываем путь к папке.
+    directory = f"static/img"
+    # Получаем список папок.
+    dircts = os.listdir(directory)
+    return dircts
 
 
 @app.get('/get_topic/{topic}')
@@ -78,7 +83,7 @@ async def upload(file: UploadFile):
     try:
         print(file.size)
         date_now = datetime.strftime(datetime.now(), "%H:%M:%S")
-        file_location = f"static/img/temp/{date_now}_{file.filename}"
+        file_location = f"static/img/НаПроверку/{date_now}_{file.filename}"
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
 
